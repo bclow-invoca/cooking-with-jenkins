@@ -3,18 +3,42 @@ driver:
   name: vagrant
 
 driver_config:
-  provider: vmware_fusion
   customize:
-    memory: 512
+    cpus:   2
+    memory: 2048
+  require_chef_omnibus: true
+  network:
+    - [ 'forwarded_port', { guest: 8080, host: 8080 } ]
 
 provisioner:
   name: chef_solo
+  environments_path: "environments"
+  nodes_path: "nodes"
+  data_bags_path: "data_bags"
+  encrypted_data_bag_secret_key_path: "test/data/secret.txt"
+  client_rb:
+    environment: test
+    diff_disable: true
+  attributes:
+    networked_services:
+      http:
+        ports: [8080]
+        ips: [0.0.0.0/0]
+        protocols: [tcp]
+      ssh:
+        ports: [22]
+        ips: [0.0.0.0/0]
+        protocols: [tcp]
 
 platforms:
-  - name: ubuntu-13.04
+- name: ubuntu-14.04
+  driver:
+    box: opscode-ubuntu-14.04
+    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box
+  driver_config:
+    require_chef_omnibus: "11.14.6"
 
 suites:
   - name: default
     run_list:
-      - recipe[cooking-with-jenkins::default]
-    attributes:
+      - recipe[jenkins-ci::default]
