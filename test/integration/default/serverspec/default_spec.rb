@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "cooking-with-jenkins::default" do
+describe "jenkins-ci::default" do
 
   it "listens on port 8080" do
     expect(port(8080)).to be_listening

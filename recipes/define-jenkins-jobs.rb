@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: cooking-with-jenkins
+# Cookbook Name:: jenkins-ci
 # Recipe:: define-jenkins-jobs
 #
 # Adds jobs in Jenkins for testing our cookbooks

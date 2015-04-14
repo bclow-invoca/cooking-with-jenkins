@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: cooking-with-jenkins
+# Cookbook Name:: jenkins-ci
 # Definition:: cookbook_ci
 #
 # Sets up Jenkins jobs to test a specified Chef cookbook
@@ -38,7 +38,7 @@ define :cookbook_ci, :branch => 'master', :foodcritic => true, :chefspec => fals
   template job_config do
     source 'cookbook-job.xml.erb'
     variables :git_url => repo, :git_branch => params[:branch], :commands => commands.join("\n"), :params => params
-    notifies  :update, "jenkins_job[#{job_name}]", :immediately
-    notifies  :build, "jenkins_job[#{job_name}]", :immediately
+    notifies  :create, "jenkins_job[#{job_name}]", :immediately
+    notifies  :enable, "jenkins_job[#{job_name}]", :immediately
   end
 end

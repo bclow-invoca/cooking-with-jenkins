@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: cooking-with-jenkins
+# Cookbook Name:: jenkins-ci
 # Recipe:: default
 #
 # Copyright (C) 2013 Zachary Stevens
@@ -18,13 +18,13 @@
 #
 
 # Install everything
-include_recipe "cooking-with-jenkins::install"
+include_recipe "jenkins-ci::install"
 
 # Prepare docker for use under jenkins
-include_recipe "cooking-with-jenkins::configure-docker"
+include_recipe "jenkins-ci::configure-docker"
 
 # Prepare jenkins for running jobs
-include_recipe "cooking-with-jenkins::configure-jenkins"
+include_recipe "jenkins-ci::configure-jenkins"
 
 # Create jobs for the cookbooks we're testing
-include_recipe "cooking-with-jenkins::define-jenkins-jobs"
+include_recipe "jenkins-ci::define-jenkins-jobs"
