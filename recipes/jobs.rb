@@ -20,9 +20,9 @@
 #
 
 node['jenkins-ci']['jenkins']['job'].each do |_job, options|
-  cookbook_ci "#{options['name']}" do
-    repository "#{options['repository']}"
-    branch "#{options['branch']}"
+  cookbook_ci options['name'] do
+    repository options['repository']
+    branch options['branch']
     foodcritic options['foodcritic']
     chefspec options['chefspec']
     serverspec options['serverspec']
