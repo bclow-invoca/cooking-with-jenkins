@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: jenkins-ci
-# Recipe:: define-jenkins-jobs
+# Recipe:: jobs
 #
 # Adds jobs in Jenkins for testing our cookbooks
 #
@@ -19,30 +19,14 @@
 # limitations under the License.
 #
 
-# Create jenkins jobs for the cookbooks we want to test
-cookbook_ci "managed_directory" do
-  repository "https://github.com/zts/chef-cookbook-managed_directory.git"
-  branch "master"
-  foodcritic true
-  chefspec true
-  serverspec true
-  junit_results true
-end
-
-cookbook_ci "mcollective" do
-  repository "https://github.com/zts/cookbook-mcollective.git"
-  branch "master"
-  foodcritic true
-  chefspec false
-  serverspec true
-end
-
-# test repo with foodcritic errors, and junit-format rspec output
-cookbook_ci "test" do
-  repository "https://github.com/zts/test-cookbook.git"
-  branch "master"
-  foodcritic true
-  chefspec true
-  serverspec false
-  junit_results true
+node['jenkins-ci']['jenkins']['job'].each do |_job, options|
+  cookbook_ci "#{options['name']}" do
+    repository "#{options['repository']}"
+    branch "#{options['branch']}"
+    foodcritic options['foodcritic']
+    chefspec options['chefspec']
+    serverspec options['serverspec']
+    junit_results options['junit_results']
+    action :create
+  end
 end
