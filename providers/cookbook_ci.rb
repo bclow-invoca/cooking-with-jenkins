@@ -10,36 +10,35 @@ end
 #
 action :create do
   job_name = "cookbook-#{new_resource.name}"
-  repo = new_resource.repository
 
-  job_config = File.join(Chef::Config[:file_cache_path], "#{job_name}-config.xml")
+  job_config = ::File.join(Chef::Config[:file_cache_path], "#{job_name}-config.xml")
 
   jenkins_job job_name do
     action :nothing
     config job_config
   end
 
-  commands = ["bundle install"]
+  commands = ["bundle install --deployment"]
   commands << "bundle exec rake test:foodcritic" if new_resource.foodcritic
   commands << "bundle exec rake test:chefspec" if new_resource.chefspec
-  commands << "bundle exec berks" if new_resource.kitchen
-  commands << "bundle exec rake test:serverspec" if new_resource.kitchen
+  commands << "bundle exec berks" if new_resource.serverspec
+  commands << "bundle exec rake test:serverspec" if new_resource.serverspec
 
   template job_config do
     source 'cookbook-job.xml.erb'
     cookbook 'jenkins-ci'
     variables(
-      :git_url => new_resource.repo
-      :git_branch => new_resource.branch
-      :commands => commands.join("\n")
+      :git_url => new_resource.repository,
+      :git_branch => new_resource.branch,
+      :commands => commands.join("\n"),
       :params => new_resource
     )
-    notifies  :create, "jenkins_job[#{job_name}]", :immediately
+    notifies :create, "jenkins_job[#{job_name}]", :immediately
   end
 end
 
 #
-# create action
+# delete action
 #
 action :delete do
   job_name = "cookbook-#{new_resource.name}"
@@ -47,7 +46,7 @@ action :delete do
 end
 
 #
-# create action
+# enable action
 #
 action :enable do
   job_name = "cookbook-#{new_resource.name}"
@@ -55,7 +54,7 @@ action :enable do
 end
 
 #
-# create action
+# disable action
 #
 action :disable do
   job_name = "cookbook-#{new_resource.name}"
