@@ -42,7 +42,7 @@ end
 #
 action :delete do
   job_name = "cookbook-#{new_resource.name}"
-  notifies  :delete, "jenkins_job[#{job_name}]", :immediately
+  notifies :delete, "jenkins_job[#{job_name}]", :immediately
 end
 
 #
@@ -50,7 +50,7 @@ end
 #
 action :enable do
   job_name = "cookbook-#{new_resource.name}"
-  notifies  :enable, "jenkins_job[#{job_name}]", :immediately
+  notifies :enable, "jenkins_job[#{job_name}]", :immediately
 end
 
 #
@@ -58,5 +58,5 @@ end
 #
 action :disable do
   job_name = "cookbook-#{new_resource.name}"
-  notifies  :disable, "jenkins_job[#{job_name}]", :immediately
+  notifies :disable, "jenkins_job[#{job_name}]", :immediately
 end
