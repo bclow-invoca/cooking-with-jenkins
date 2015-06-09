@@ -2,7 +2,7 @@
 # Cookbook Name:: jenkins-ci
 # Recipe:: install
 #
-# installs all of the stuff we'll be using
+# installs packages required for CI testing of cookbooks
 #
 # Copyright (C) 2013 Zachary Stevens
 # 
@@ -20,19 +20,26 @@
 #
 
 # First, make sure apt-update gets run
-include_recipe "apt"
+case node['platform_family']
+when 'debian'
+  include_recipe 'apt'
+when 'rhel'
+  include_recipe 'yum'
+else
+  fail "'#{node['platform_family']}' is not supported!"
+end
 
 # We'll be pulling code using git
-include_recipe "git::default"
+include_recipe 'git::default'
 
-# We'll need a ruby to run cookbook tests, and some of the gems we'll
-# be installing need a few dev packages installed
-ruby_packages = %w{ ruby1.9.3 rake bundler libxml2-dev libxslt-dev }
-ruby_packages.each { |p| package p }
+if node['jenkins_ci']['rbenv']['install']
+  # We'll need a ruby to run cookbook tests, and some of the gems we'll
+  # be installing need a few dev packages installed
+  node['jenkins_ci']['ruby_packages'].each { |p| package p }
 
-# We'll be running cookbook integration tests under Docker
-include_recipe "docker"
+  include_recipe 'rbenv::user'
 
-# Finally, install jenkins
-include_recipe "jenkins::master"
-
+  if node['jenkins_ci'].key? 'gem_packages'
+    node['jenkins_ci']['gem_packages'].each { |p| gem_package p }
+  end
+end

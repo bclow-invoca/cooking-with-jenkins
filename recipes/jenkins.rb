@@ -20,37 +20,57 @@
 # limitations under the License.
 #
 
+include_recipe 'jenkins::master'
+
 # These plugins allow us to pull code (for jobs) from git
 jenkins_plugin "scm-api"
 jenkins_plugin "git-client"
 jenkins_plugin "git"
+jenkins_plugin "github"
+jenkins_plugin "github-api"
+jenkins_plugin "github-oauth"
 
 # This colourises console output, instead of displaying literal ansi
 # escape sequences in the browser.
 jenkins_plugin "ansicolor"
+
+jenkins_plugin "token-macro"
+
+# You can use this plugin to enable docker for kitchen tests in your wrapper cookbook if you please.
+jenkins_plugin "config-file-provider" do
+  version '2.7.4'
+  action :install
+end
+
+# common optional dependencies
+jenkins_plugin "ant"
+jenkins_plugin "javadoc"
+jenkins_plugin "maven-plugin"
+
+# This plugin lets us parse console output to report on warnings.
+# We'll use this to extract foodcritic's complaints, per the
+# instructions on http://acrmp.github.io/foodcritic/#ci
+jenkins_plugin "analysis-core"
+jenkins_plugin "violations"
+jenkins_plugin "dashboard-view"
+jenkins_plugin "warnings"
+
+# install the rbenv plugin
+jenkins_plugin "ruby-runtime"
+jenkins_plugin "rbenv"
+
+cookbook_file "#{node['jenkins']['master']['home']}/hudson.plugins.warnings.WarningsPublisher.xml" do
+  owner "jenkins"
+  group "jenkins"
+  mode "0644"
+  notifies :restart, "service[jenkins]"
+end
 
 # This plugin lets us define static files which can (optionally) be
 # installed into a job's workspace before running any commands.  We
 # use it to override the test-kitchen configuration to use docker
 # instead of vagrant.
 cookbook_file "#{node['jenkins']['master']['home']}/custom-config-files.xml" do
-  owner "jenkins"
-  group "jenkins"
-  mode "0644"
-  notifies :restart, "service[jenkins]"
-end
-jenkins_plugin "token-macro"
-jenkins_plugin "config-file-provider" do
-  version "2.7"
-  action :install
-end
-
-# This plugin lets us parse console output to report on warnings.
-# We'll use this to extract foodcritic's complaints, per the
-# instructions on http://acrmp.github.io/foodcritic/#ci
-jenkins_plugin "analysis-core"
-jenkins_plugin "warnings"
-cookbook_file "#{node['jenkins']['master']['home']}/hudson.plugins.warnings.WarningsPublisher.xml" do
   owner "jenkins"
   group "jenkins"
   mode "0644"

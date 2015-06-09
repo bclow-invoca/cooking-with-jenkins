@@ -19,6 +19,8 @@
 # limitations under the License.
 #
 
+include_recipe 'docker::default'
+
 # add jenkins to the docker group, so that it doesn't need to use
 # sudo.  Alternatively, we could configure sudo such that jenkins can
 # run "docker" without a password.
