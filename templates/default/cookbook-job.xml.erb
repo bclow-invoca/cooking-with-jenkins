@@ -34,7 +34,7 @@
     </hudson.tasks.Shell>
   </builders>
   <publishers>
-<% if @params[:foodcritic] %>
+<% if @params.foodcritic %>
     <hudson.plugins.warnings.WarningsPublisher plugin="warnings@4.28">
       <healthy></healthy>
       <unHealthy></unHealthy>
@@ -65,7 +65,7 @@
       </consoleParsers>
     </hudson.plugins.warnings.WarningsPublisher>
 <% end %>
-<% if @params[:junit_results] %>
+<% if @params.junit_results %>
     <hudson.tasks.junit.JUnitResultArchiver>
       <testResults>results.xml</testResults>
       <keepLongStdio>false</keepLongStdio>
