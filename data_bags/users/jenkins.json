@@ -1,0 +1,14 @@
+{
+  "id": "jenkins",
+  "enabled": true,
+  "environments": [
+    "_default",
+    "test",
+    "staging",
+    "production"
+  ],
+  "groups": [
+    "jenkins"
+  ],
+  "ssh_keys": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCgjlO4u5wmNb+41TvtkT5q595uHCpmNZ4crhUGZj7xJ9wKSH/dmCVWXYuujO0Pj3LREVwjcrlhDlGSZ2rioggJK97d329l6tGhFZoV+3UdmeKS3lQY2JLh9RXWvgW4HMoUmrlYVp1w65Zv51XwfHegOLk3KdWXHU/g6f8tR/62Utb9GVLvXhtP3uePM9ephjjS7aOy+1ygux0K+HvEJz1D3wRtkr29nnaC34pMPSgOLQsd3eZKqxEtBlTprAcgMPms1fZtEFTgj/l0CZ+4OXSJ+h1rUY+vcMUNBnmxMf9NT38Yb7nz1w+Z4VScaFqpQCjHw0/mPiMm5dFbUO7m78wR jenkins@imaginaryexample.com"
+}
