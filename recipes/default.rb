@@ -17,14 +17,14 @@
 # limitations under the License.
 #
 
-# Install everything
-include_recipe "jenkins-ci::install"
+# Install support packages and framework
+include_recipe "jenkins-ci::packages"
 
 # Prepare docker for use under jenkins
-include_recipe "jenkins-ci::configure-docker"
+include_recipe "jenkins-ci::docker"
 
 # Prepare jenkins for running jobs
-include_recipe "jenkins-ci::configure-jenkins"
+include_recipe "jenkins-ci::jenkins"
 
 # Create jobs for the cookbooks we're testing
-include_recipe "jenkins-ci::define-jenkins-jobs"
+include_recipe "jenkins-ci::jobs"
