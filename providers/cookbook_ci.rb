@@ -18,11 +18,17 @@ action :create do
     config job_config
   end
 
+  # FIXME; correct to match old setup; add override via attribute
   commands = ["bundle install --deployment"]
-  commands << "bundle exec rake test:foodcritic" if new_resource.foodcritic
-  commands << "bundle exec rake test:chefspec" if new_resource.chefspec
-  commands << "bundle exec berks" if new_resource.serverspec
-  commands << "bundle exec rake test:serverspec" if new_resource.serverspec
+  commands << "bundle exec rake lint" if new_resource.foodcritic
+  commands << "bundle exec rake spec" if new_resource.chefspec
+  commands << "bundle exec rake kitchen:all" if new_resource.serverspec
+
+  #  commands = ["bundle install --deployment"]
+  #  commands << "bundle exec rake test:foodcritic" if new_resource.foodcritic
+  #  commands << "bundle exec rake test:chefspec" if new_resource.chefspec
+  #  commands << "bundle exec berks" if new_resource.serverspec
+  #  commands << "bundle exec rake test:serverspec" if new_resource.serverspec
 
   template job_config do
     source 'cookbook-job.xml.erb'
@@ -35,14 +41,6 @@ action :create do
     )
     notifies :create, "jenkins_job[#{job_name}]", :immediately
   end
-end
-
-#
-# delete action
-#
-action :delete do
-  job_name = "cookbook-#{new_resource.name}"
-  notifies :delete, "jenkins_job[#{job_name}]", :immediately
 end
 
 #
@@ -59,4 +57,12 @@ end
 action :disable do
   job_name = "cookbook-#{new_resource.name}"
   notifies :disable, "jenkins_job[#{job_name}]", :immediately
+end
+
+#
+# delete action
+#
+action :delete do
+  job_name = "cookbook-#{new_resource.name}"
+  notifies :delete, "jenkins_job[#{job_name}]", :immediately
 end
