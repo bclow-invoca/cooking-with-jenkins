@@ -1,41 +1,76 @@
 require "spec_helper"
 
 describe "jenkins-ci::default" do
-  it "listens on port 8080" do
-    expect(port(8080)).to be_listening
-  end
-
   describe "displays the Jenkins home page on port 8080" do
-    describe command('wget -q -O - http://localhost:8080/') do
-      its(:stdout) { should match(/.*Jenkins.*/) }
+    it "listens on port 8080" do
+      expect(port(8080)).to be_listening
+    end
+    index_page = command('wget -q -O - http://localhost:8080/').stdout
+    it "responds with 'Jenkins'" do
+      expect(index_page).to match(/.*Jenkins.*/)
     end
   end
 
   describe "installs git" do
-    describe command('which git') do
-      its(:stdout) { should match %r{.*/bin/git.*} }
+    which_git = command('which git').stdout.chomp
+    it "has git in search path" do
+      expect(which_git).to match %r{.*/bin/git.*}
+    end
+    describe file(which_git) do
+      it { should be_file }
+      it { should be_mode 755 }
+      it { should be_owned_by 'root' }
+      it { should be_grouped_into 'root' }
+    end
+  end
+
+  describe "jenkins cli exists" do
+    describe file('/var/cache/jenkins/war/WEB-INF/jenkins-cli.jar') do
+      it { should be_file }
+      it { should be_mode 644 }
+      it { should be_owned_by 'jenkins' }
+      it { should be_grouped_into 'jenkins' }
     end
   end
 
   describe "installs the Jenkins git plugins" do
+    list_installed_plugins = command('java -jar /var/cache/jenkins/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080/ list-plugins').stdout
     %w(
-      scm-api
+      analysis-core
+      ansicolor
+      ant
+      dashboard-view
       git
       git-client
-    ).each do |p|
-      search = "plugin/#{p}/uninstall"
-      list_installed_plugins = "wget -q -O - http://localhost:8080/pluginManager/installed"
-      describe command(list_installed_plugins) do
-        its(:stdout) { should match(/.*#{Regexp.quote(search)}.*/) }
+      github
+      github-api
+      github-oauth
+      javadoc
+      maven-plugin
+      rbenv
+      ruby-runtime
+      scm-api
+      token-macro
+      violations
+      warnings
+    ).each do |plugin|
+      it "has #{plugin} plugin installed" do
+        expect(list_installed_plugins).to match(/.*#{Regexp.quote(plugin)}.*/)
       end
     end
   end
 
+  # FIXME; make single execution, then multiple regex calls on output
   describe "creates a job for the memcached cookbook" do
-    list_jobs = "wget -q -O - http://localhost:8080/view/All/"
-    job_name = "cookbook-test"
-    describe command(list_jobs) do
-      its(:stdout) { should match(/.*#{Regexp.quote(job_name)}.*/) }
+    list_jobs = command('java -jar /var/cache/jenkins/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080/ list-jobs').stdout
+    %w(
+      cookbook-managed_directory
+      cookbook-mcollective
+      cookbook-test
+    ).each do |job_name|
+      it "has #{job_name} installed" do
+        expect(list_jobs).to match(/.*#{Regexp.quote(job_name)}.*/)
+      end
     end
   end
 end
