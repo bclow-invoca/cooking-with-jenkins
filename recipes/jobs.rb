@@ -19,7 +19,7 @@
 # limitations under the License.
 #
 
-node['jenkins-ci']['jenkins']['job'].each do |_job, options|
+node['jenkins_ci']['jenkins']['job'].each do |_job, options|
   cookbook_ci options['name'] do
     repository options['repository']
     branch options['branch']
