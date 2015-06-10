@@ -53,5 +53,6 @@ platforms:
 suites:
   - name: jenkins
     run_list:
+      - recipe[jenkins-ci::apache]
       - recipe[jenkins-ci::rbenv]
       - recipe[jenkins-ci::default]
