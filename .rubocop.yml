@@ -1,0 +1,38 @@
+AllCops:
+  Include:
+    - Berksfile
+    - Gemfile
+    - Rakefile
+    - Thorfile
+    - Guardfile
+  Exclude:
+    - metadata.rb
+
+AlignParameters:
+  Enabled: false
+
+Encoding:
+  Enabled: false
+
+LineLength:
+  Max: 200
+
+StringLiterals:
+  Enabled: false
+
+ClassLength:
+  Enabled: false
+Documentation:
+  Enabled: false
+HashSyntax:
+  Enabled: false
+LineLength:
+  Enabled: false
+MethodLength:
+  Enabled: false
+SignalException:
+  Enabled: false
+TrailingComma:
+  Enabled: false
+WordArray:
+  Enabled: false

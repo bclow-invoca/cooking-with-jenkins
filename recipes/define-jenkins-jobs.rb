@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: cooking-with-jenkins
+# Cookbook Name:: jenkins-ci
 # Recipe:: define-jenkins-jobs
 #
 # Adds jobs in Jenkins for testing our cookbooks
@@ -25,7 +25,7 @@ cookbook_ci "managed_directory" do
   branch "master"
   foodcritic true
   chefspec true
-  kitchen true
+  serverspec true
   junit_results true
 end
 
@@ -34,7 +34,7 @@ cookbook_ci "mcollective" do
   branch "master"
   foodcritic true
   chefspec false
-  kitchen true
+  serverspec true
 end
 
 # test repo with foodcritic errors, and junit-format rspec output
@@ -43,6 +43,6 @@ cookbook_ci "test" do
   branch "master"
   foodcritic true
   chefspec true
-  kitchen false
+  serverspec false
   junit_results true
 end

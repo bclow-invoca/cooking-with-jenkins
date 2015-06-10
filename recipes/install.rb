@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: cooking-with-jenkins
+# Cookbook Name:: jenkins-ci
 # Recipe:: install
 #
 # installs all of the stuff we'll be using
@@ -34,5 +34,5 @@ ruby_packages.each { |p| package p }
 include_recipe "docker"
 
 # Finally, install jenkins
-include_recipe "jenkins::server"
+include_recipe "jenkins::master"
 
