@@ -65,7 +65,6 @@ describe "jenkins-ci::default" do
     end
   end
 
-  # FIXME; make single execution, then multiple regex calls on output
   describe "creates a job for the memcached cookbook" do
     list_jobs = command('java -jar /var/cache/jenkins/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080/ list-jobs').stdout
     %w(
