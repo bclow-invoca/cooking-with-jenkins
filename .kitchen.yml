@@ -52,6 +52,8 @@ platforms:
 
 suites:
   - name: jenkins
+    excludes:
+      centos-6.5
     run_list:
       - recipe[jenkins-ci::rbenv]
       - recipe[jenkins-ci::default]
