@@ -16,7 +16,7 @@ describe "jenkins-ci::packages" do
 
   if os[:family] == 'redhat'
     describe "installs yum" do
-      which_apt = command('which yum').stdout.chomp
+      which_yum = command('which yum').stdout.chomp
       it "has yum in search path" do
         expect(which_yum).to match %r{.*/bin/yum.*}
       end
