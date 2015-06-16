@@ -32,7 +32,7 @@ describe "jenkins-ci::rbenv" do
   end
 
   %w(
-    1.9.3-p484
+    1.9.3-p448
     2.1.2
   ).each do |ruby|
     describe ruby do
