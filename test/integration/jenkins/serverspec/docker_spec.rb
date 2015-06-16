@@ -8,7 +8,11 @@ describe "jenkins-ci::docker" do
     end
     docker_info = command("docker info").stdout
     it "docker info" do
-      expect(docker_info).to match(/Storage Driver: aufs/)
+      if ['debian', 'ubuntu'].include?(os[:family])
+        expect(docker_info).to match(/Storage Driver: aufs/)
+      elsif os[:family] == 'redhat'
+        expect(docker_info).to match(/Storage Driver: devicemapper/)
+      end
     end
     docker_images = command("docker images").stdout
     %w(
