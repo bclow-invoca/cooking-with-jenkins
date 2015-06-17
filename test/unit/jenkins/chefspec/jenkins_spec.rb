@@ -26,6 +26,7 @@ describe 'jenkins-ci::jenkins' do
     analysis-core
     ansicolor
     ant
+    config-file-provider
     dashboard-view
     git
     git-client
@@ -34,8 +35,6 @@ describe 'jenkins-ci::jenkins' do
     github-oauth
     javadoc
     maven-plugin
-    rbenv
-    ruby-runtime
     scm-api
     token-macro
     violations
@@ -44,12 +43,6 @@ describe 'jenkins-ci::jenkins' do
     it "install jenkins plugin #{plugin}" do
       expect(chef_run).to install_jenkins_plugin(plugin)
     end
-  end
-
-  it 'install jenkins plugin config-file-provider version 2.7.4' do
-    expect(chef_run).to install_jenkins_plugin('config-file-provider').with(
-      version: '2.7.4'
-    )
   end
 
   let(:hudson_xml) { '/var/lib/jenkins/hudson.plugins.warnings.WarningsPublisher.xml' }
