@@ -27,6 +27,7 @@ node['jenkins_ci']['jenkins']['job'].each do |_job, options|
     chefspec options['chefspec']
     serverspec options['serverspec']
     junit_results options['junit_results']
+    command options['command']
     action :create
   end
 end

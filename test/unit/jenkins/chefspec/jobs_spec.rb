@@ -15,9 +15,8 @@ describe 'jenkins-ci::jobs' do
   end
 
   cookbooks = {
-    'managed_directory' => ['https://github.com/zts/chef-cookbook-managed_directory.git', 'master', true, true, true, true],
-    'mcollective' => ['https://github.com/zts/cookbook-mcollective.git', 'master', true, false, true, false],
-    'test' => ['https://github.com/zts/test-cookbook.git', 'master', true, true, false, true],
+    'template_cookbook' => ['https://github.com/bclow-invoca/template-cookbook.git', 'master', true, true, true, false, 'template_cookbook'],
+    'test' => ['https://github.com/zts/test-cookbook.git', 'master', true, true, false, true, 'base'],
   }
 
   cookbooks.each do |cb, tests|
@@ -28,7 +27,8 @@ describe 'jenkins-ci::jobs' do
         foodcritic: tests[2],
         chefspec: tests[3],
         serverspec: tests[4],
-        junit_results: tests[5]
+        junit_results: tests[5],
+        command: tests[6]
       )
     end
   end

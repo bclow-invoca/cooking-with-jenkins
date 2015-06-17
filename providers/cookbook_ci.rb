@@ -18,17 +18,13 @@ action :create do
     config job_config
   end
 
-  # FIXME; correct to match old setup; add override via attribute
-  commands = ["bundle install --deployment"]
-  commands << "bundle exec rake lint" if new_resource.foodcritic
-  commands << "bundle exec rake spec" if new_resource.chefspec
-  commands << "bundle exec rake kitchen:all" if new_resource.serverspec
-
-  #  commands = ["bundle install --deployment"]
-  #  commands << "bundle exec rake test:foodcritic" if new_resource.foodcritic
-  #  commands << "bundle exec rake test:chefspec" if new_resource.chefspec
-  #  commands << "bundle exec berks" if new_resource.serverspec
-  #  commands << "bundle exec rake test:serverspec" if new_resource.serverspec
+  commands = []
+  node['jenkins_ci']['jenkins']['command'][new_resource.command].tap do |command|
+    commands << [*command['base']]
+    commands << [*command['foodcritic']] if new_resource.foodcritic
+    commands << [*command['chefspec']] if new_resource.chefspec
+    commands << [*command['serverspec']] if new_resource.serverspec
+  end
 
   template job_config do
     source 'cookbook-job.xml.erb'
