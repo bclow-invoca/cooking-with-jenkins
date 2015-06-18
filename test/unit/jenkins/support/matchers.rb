@@ -9,20 +9,4 @@ if defined?(ChefSpec)
   def install_rbenv_gem(package_name)
     ChefSpec::Matchers::ResourceMatcher.new(:rbenv_gem, :install, package_name)
   end
-
-  def create_cookbook_ci(cookbook)
-    ChefSpec::Matchers::ResourceMatcher.new(:jenkins_ci_cookbook_ci, :create, cookbook)
-  end
-
-  def enable_cookbook_ci(cookbook)
-    ChefSpec::Matchers::ResourceMatcher.new(:jenkins_ci_cookbook_ci, :enable, cookbook)
-  end
-
-  def disable_cookbook_ci(cookbook)
-    ChefSpec::Matchers::ResourceMatcher.new(:jenkins_ci_cookbook_ci, :disable, cookbook)
-  end
-
-  def delete_cookbook_ci(cookbook)
-    ChefSpec::Matchers::ResourceMatcher.new(:jenkins_ci_cookbook_ci, :delete, cookbook)
-  end
 end
