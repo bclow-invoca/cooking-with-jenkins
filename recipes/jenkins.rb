@@ -37,6 +37,7 @@ cookbook_file "#{node['jenkins']['master']['home']}/hudson.plugins.warnings.Warn
   group "jenkins"
   mode "0644"
   notifies :restart, "service[jenkins]", :delayed
+  only_if { node['jenkins_ci']['jenkins']['warnings_publisher'] == true }
 end
 
 # This plugin lets us define static files which can (optionally) be
@@ -48,4 +49,5 @@ cookbook_file "#{node['jenkins']['master']['home']}/custom-config-files.xml" do
   group "jenkins"
   mode "0644"
   notifies :restart, "service[jenkins]", :delayed
+  only_if { node['jenkins_ci']['jenkins']['custome_kitchen'] == true }
 end
