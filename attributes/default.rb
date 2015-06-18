@@ -3,7 +3,7 @@
 #
 default['jenkins_ci']['rbenv']['install'] = false
 default['jenkins_ci']['jenkins']['warnings_publisher'] = true
-default['jenkins_ci']['jenkins']['custome_kitchen'] = true
+default['jenkins_ci']['jenkins']['custom_kitchen'] = true
 
 #
 # Determine what to install

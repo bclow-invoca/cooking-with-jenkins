@@ -4,15 +4,7 @@
 require_relative 'spec_helper'
 
 describe 'jenkins-ci::jenkins' do
-  let(:chef_run) do
-    ChefSpec::Runner.new do |node|
-      env = Chef::Environment.new
-      env.name 'test'
-
-      allow(node).to receive(:chef_environment).and_return(env.name)
-      allow(Chef::Environment).to receive(:load).and_return(env)
-    end.converge(described_recipe)
-  end
+  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
 
   let(:chef_run_no_custom) do
     ChefSpec::Runner.new do |node|
@@ -20,7 +12,7 @@ describe 'jenkins-ci::jenkins' do
       env.name 'test'
 
       node.set['jenkins_ci']['jenkins']['warnings_publisher'] = false
-      node.set['jenkins_ci']['jenkins']['custome_kitchen'] = false
+      node.set['jenkins_ci']['jenkins']['custom_kitchen'] = false
 
       allow(node).to receive(:chef_environment).and_return(env.name)
       allow(Chef::Environment).to receive(:load).and_return(env)

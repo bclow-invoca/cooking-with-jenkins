@@ -49,5 +49,5 @@ cookbook_file "#{node['jenkins']['master']['home']}/custom-config-files.xml" do
   group "jenkins"
   mode "0644"
   notifies :restart, "service[jenkins]", :delayed
-  only_if { node['jenkins_ci']['jenkins']['custome_kitchen'] == true }
+  only_if { node['jenkins_ci']['jenkins']['custom_kitchen'] == true }
 end
