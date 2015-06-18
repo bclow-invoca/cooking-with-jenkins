@@ -8,6 +8,7 @@ attribute :foodcritic,    :kind_of => [TrueClass, FalseClass], :default => true
 attribute :chefspec,      :kind_of => [TrueClass, FalseClass], :default => true
 attribute :serverspec,    :kind_of => [TrueClass, FalseClass], :default => true
 attribute :junit_results, :kind_of => [TrueClass, FalseClass], :default => false
+attribute :command,       :kind_of => String,                  :default => "base"
 
 attr_accessor :attribute, :attribute
 

@@ -1,11 +1,11 @@
 #
 # Cookbook Name:: jenkins-ci
-# Recipe:: configure-docker
+# Recipe:: jobs
 #
-# Prepares docker for running integration tests under jenkins
+# Adds jobs in Jenkins for testing our cookbooks
 #
 # Copyright (C) 2013 Zachary Stevens
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -19,16 +19,15 @@
 # limitations under the License.
 #
 
-# add jenkins to the docker group, so that it doesn't need to use
-# sudo.  Alternatively, we could configure sudo such that jenkins can
-# run "docker" without a password.
-group "docker" do
-  members "jenkins"
-  append true
-  action :modify
-  notifies :restart, "service[docker]"
+node['jenkins_ci']['jenkins']['job'].each do |_job, options|
+  cookbook_ci options['name'] do
+    repository options['repository']
+    branch options['branch']
+    foodcritic options['foodcritic']
+    chefspec options['chefspec']
+    serverspec options['serverspec']
+    junit_results options['junit_results']
+    command options['command']
+    action :create
+  end
 end
-
-# Download the images we'll be using with test-kitchen.
-docker_image "centos"
-docker_image "ubuntu"

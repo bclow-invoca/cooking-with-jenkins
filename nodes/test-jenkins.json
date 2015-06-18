@@ -1,0 +1,13 @@
+{
+  "automatic": {
+    "ipaddress": "10.0.0.83",
+    "roles": []
+  },
+  "chef_environment": "test",
+  "id": "test-jenkins",
+  "normal": {
+  },
+  "run_list": [
+    "recipe[jenkins-ci::default]"
+  ]
+}

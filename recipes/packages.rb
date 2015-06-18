@@ -1,6 +1,8 @@
 #
 # Cookbook Name:: jenkins-ci
-# Recipe:: default
+# Recipe:: install
+#
+# installs packages required for CI testing of cookbooks
 #
 # Copyright (C) 2013 Zachary Stevens
 #
@@ -17,14 +19,15 @@
 # limitations under the License.
 #
 
-# Install support packages and framework
-include_recipe "jenkins-ci::packages"
+# First, make sure apt-update gets run
+case node['platform_family']
+when 'debian'
+  include_recipe 'apt'
+when 'rhel'
+  include_recipe 'yum'
+else
+  fail "'#{node['platform_family']}' is not supported!"
+end
 
-# Prepare jenkins for running jobs
-include_recipe "jenkins-ci::jenkins"
-
-# Prepare docker for use under jenkins
-include_recipe "jenkins-ci::docker"
-
-# Create jobs for the cookbooks we're testing
-include_recipe "jenkins-ci::jobs"
+# We'll be pulling code using git
+include_recipe 'git::default'

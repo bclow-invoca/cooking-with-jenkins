@@ -18,11 +18,13 @@ action :create do
     config job_config
   end
 
-  commands = ["bundle install --deployment"]
-  commands << "bundle exec rake test:foodcritic" if new_resource.foodcritic
-  commands << "bundle exec rake test:chefspec" if new_resource.chefspec
-  commands << "bundle exec berks" if new_resource.serverspec
-  commands << "bundle exec rake test:serverspec" if new_resource.serverspec
+  commands = []
+  node['jenkins_ci']['jenkins']['command'][new_resource.command].tap do |command|
+    commands << [*command['base']]
+    commands << [*command['foodcritic']] if new_resource.foodcritic
+    commands << [*command['chefspec']] if new_resource.chefspec
+    commands << [*command['serverspec']] if new_resource.serverspec
+  end
 
   template job_config do
     source 'cookbook-job.xml.erb'
@@ -38,19 +40,11 @@ action :create do
 end
 
 #
-# delete action
-#
-action :delete do
-  job_name = "cookbook-#{new_resource.name}"
-  notifies  :delete, "jenkins_job[#{job_name}]", :immediately
-end
-
-#
 # enable action
 #
 action :enable do
   job_name = "cookbook-#{new_resource.name}"
-  notifies  :enable, "jenkins_job[#{job_name}]", :immediately
+  notifies :enable, "jenkins_job[#{job_name}]", :immediately
 end
 
 #
@@ -58,5 +52,13 @@ end
 #
 action :disable do
   job_name = "cookbook-#{new_resource.name}"
-  notifies  :disable, "jenkins_job[#{job_name}]", :immediately
+  notifies :disable, "jenkins_job[#{job_name}]", :immediately
+end
+
+#
+# delete action
+#
+action :delete do
+  job_name = "cookbook-#{new_resource.name}"
+  notifies :delete, "jenkins_job[#{job_name}]", :immediately
 end

@@ -1,11 +1,11 @@
 #
 # Cookbook Name:: jenkins-ci
-# Recipe:: install
+# Recipe:: configure-docker
 #
-# installs all of the stuff we'll be using
+# Prepares docker for running integration tests under jenkins
 #
 # Copyright (C) 2013 Zachary Stevens
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -19,20 +19,18 @@
 # limitations under the License.
 #
 
-# First, make sure apt-update gets run
-include_recipe "apt"
+include_recipe 'docker::default'
 
-# We'll be pulling code using git
-include_recipe "git::default"
+# add jenkins to the docker group, so that it doesn't need to use
+# sudo.  Alternatively, we could configure sudo such that jenkins can
+# run "docker" without a password.
+group "docker" do
+  members "jenkins"
+  append true
+  action :modify
+  notifies :restart, "service[docker]"
+end
 
-# We'll need a ruby to run cookbook tests, and some of the gems we'll
-# be installing need a few dev packages installed
-ruby_packages = %w{ ruby1.9.3 rake bundler libxml2-dev libxslt-dev }
-ruby_packages.each { |p| package p }
-
-# We'll be running cookbook integration tests under Docker
-include_recipe "docker"
-
-# Finally, install jenkins
-include_recipe "jenkins::master"
-
+# Download the images we'll be using with test-kitchen.
+docker_image "centos"
+docker_image "ubuntu"
