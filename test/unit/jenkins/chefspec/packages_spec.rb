@@ -4,15 +4,7 @@
 require_relative 'spec_helper'
 
 describe 'jenkins-ci::packages' do
-  let(:chef_run) do
-    ChefSpec::Runner.new do |node|
-      env = Chef::Environment.new
-      env.name 'test'
-
-      allow(node).to receive(:chef_environment).and_return(env.name)
-      allow(Chef::Environment).to receive(:load).and_return(env)
-    end.converge(described_recipe)
-  end
+  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
 
   %w(
     git::default

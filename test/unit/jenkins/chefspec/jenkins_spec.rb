@@ -4,10 +4,15 @@
 require_relative 'spec_helper'
 
 describe 'jenkins-ci::jenkins' do
-  let(:chef_run) do
+  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+
+  let(:chef_run_no_custom) do
     ChefSpec::Runner.new do |node|
       env = Chef::Environment.new
       env.name 'test'
+
+      node.set['jenkins_ci']['jenkins']['warnings_publisher'] = false
+      node.set['jenkins_ci']['jenkins']['custom_kitchen'] = false
 
       allow(node).to receive(:chef_environment).and_return(env.name)
       allow(Chef::Environment).to receive(:load).and_return(env)
@@ -26,6 +31,7 @@ describe 'jenkins-ci::jenkins' do
     analysis-core
     ansicolor
     ant
+    config-file-provider
     dashboard-view
     git
     git-client
@@ -34,8 +40,6 @@ describe 'jenkins-ci::jenkins' do
     github-oauth
     javadoc
     maven-plugin
-    rbenv
-    ruby-runtime
     scm-api
     token-macro
     violations
@@ -46,31 +50,35 @@ describe 'jenkins-ci::jenkins' do
     end
   end
 
-  it 'install jenkins plugin config-file-provider version 2.7.4' do
-    expect(chef_run).to install_jenkins_plugin('config-file-provider').with(
-      version: '2.7.4'
-    )
-  end
-
   let(:hudson_xml) { '/var/lib/jenkins/hudson.plugins.warnings.WarningsPublisher.xml' }
-  it 'installs jenkins file hudson.plugins.warnings.WarningsPublisher.xml' do
-    expect(chef_run).to create_cookbook_file(hudson_xml).with(
-      owner: 'jenkins',
-      group: 'jenkins',
-      mode: '0644'
-    )
-    file_notify = chef_run.cookbook_file(hudson_xml)
-    expect(file_notify).to notify('service[jenkins]').to(:restart)
+  let(:custom_config) { '/var/lib/jenkins/custom-config-files.xml' }
+  describe "customizations enabled" do
+    it 'installs jenkins file hudson.plugins.warnings.WarningsPublisher.xml' do
+      expect(chef_run).to create_cookbook_file(hudson_xml).with(
+        owner: 'jenkins',
+        group: 'jenkins',
+        mode: '0644'
+      )
+      file_notify = chef_run.cookbook_file(hudson_xml)
+      expect(file_notify).to notify('service[jenkins]').to(:restart)
+    end
+    it 'installs custom config to override test kitchen' do
+      expect(chef_run).to create_cookbook_file(custom_config).with(
+        owner: 'jenkins',
+        group: 'jenkins',
+        mode: '0644'
+      )
+      file_notify = chef_run.cookbook_file(custom_config)
+      expect(file_notify).to notify('service[jenkins]').to(:restart)
+    end
   end
 
-  let(:custom_config) { '/var/lib/jenkins/custom-config-files.xml' }
-  it 'installs custom config to override test kitchen' do
-    expect(chef_run).to create_cookbook_file(custom_config).with(
-      owner: 'jenkins',
-      group: 'jenkins',
-      mode: '0644'
-    )
-    file_notify = chef_run.cookbook_file(custom_config)
-    expect(file_notify).to notify('service[jenkins]').to(:restart)
+  describe "customizations disabled" do
+    it 'does not install jenkins file hudson.plugins.warnings.WarningsPublisher.xml' do
+      expect(chef_run_no_custom).to_not create_cookbook_file(hudson_xml)
+    end
+    it 'does not install custom config to override test kitchen' do
+      expect(chef_run_no_custom).to_not create_cookbook_file(custom_config)
+    end
   end
 end
