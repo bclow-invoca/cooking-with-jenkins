@@ -61,5 +61,7 @@ suites:
     excludes:
       centos-6.6
     run_list:
+      - recipe[jenkins-ci::virtualbox]
+      - recipe[jenkins-ci::vagrant]
       - recipe[jenkins-ci::rbenv]
       - recipe[jenkins-ci::default]
