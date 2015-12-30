@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: jenkins-ci
+# Cookbook Name:: jenkins_ci
 # Recipe:: default
 #
 # Copyright (C) 2013 Zachary Stevens
@@ -18,13 +18,13 @@
 #
 
 # Install support packages and framework
-include_recipe "jenkins-ci::packages"
+include_recipe "jenkins_ci::packages"
 
 # Prepare jenkins for running jobs
-include_recipe "jenkins-ci::jenkins"
+include_recipe "jenkins_ci::jenkins"
 
 # Prepare docker for use under jenkins
-include_recipe "jenkins-ci::docker"
+include_recipe "jenkins_ci::docker"
 
 # Create jobs for the cookbooks we're testing
-include_recipe "jenkins-ci::jobs"
+include_recipe "jenkins_ci::jobs"

@@ -6,6 +6,7 @@ AllCops:
     - Thorfile
     - Guardfile
   Exclude:
+    - berks-cookbooks/**/*
     - metadata.rb
 
 AlignParameters:

@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "jenkins-ci::jenkins" do
+describe "jenkins_ci::jenkins" do
   describe "displays the Jenkins home page on port 8080" do
     describe service('jenkins') do
       it { should be_enabled }
@@ -30,20 +30,35 @@ describe "jenkins-ci::jenkins" do
       analysis-core
       ansicolor
       ant
+      build-pipeline-plugin
+      buildresult-trigger
+      conditional-buildstep
+      config-file-provider
       dashboard-view
+      durable-task
+      email-ext
+      embeddable-build-status
       git
       git-client
+      git-server
       github
       github-api
       github-oauth
       javadoc
+      jenkins-multijob-plugin
+      jenkinswalldisplay
       maven-plugin
+      pollscm
+      promoted-builds
+      promoted-builds-simple
       rbenv
       ruby-runtime
       scm-api
+      slack
+      ssh-agent
       token-macro
-      violations
       warnings
+      workflow-aggregator
     ).each do |plugin|
       it "has #{plugin} plugin installed" do
         expect(list_installed_plugins).to match(/.*#{Regexp.quote(plugin)}.*/)

@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "jenkins-ci::packages" do
+describe "jenkins_ci::packages" do
   describe "installs git" do
     which_git = command('which git').stdout.chomp
     it "has git in search path" do

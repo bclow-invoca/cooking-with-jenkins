@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: jenkins-ci
+# Cookbook Name:: jenkins_ci
 # Recipe:: install
 #
 # installs packages required for CI testing of cookbooks

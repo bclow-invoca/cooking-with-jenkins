@@ -1,4 +1,4 @@
-# jenkins-ci cookbook
+# jenkins_ci cookbook
 
 This cookbook exists to define a Chef Resource to simplify the use of Jenkins 
 CI for Chef cookbook development.  Originally forked from 
