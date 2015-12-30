@@ -1,9 +1,9 @@
 # Rotation
-node['jenkins_ci']['jenkins']['rotation']['enabled']                 = false
-node['jenkins_ci']['jenkins']['rotation']['days_to_keep']            = -1
-node['jenkins_ci']['jenkins']['rotation']['number_to_keep']          = -1
-node['jenkins_ci']['jenkins']['rotation']['days_to_keep_artifact']   = -1
-node['jenkins_ci']['jenkins']['rotation']['number_to_keep_artifact'] = -1
+default['jenkins_ci']['jenkins']['rotation']['enabled']                 = false
+default['jenkins_ci']['jenkins']['rotation']['days_to_keep']            = -1
+default['jenkins_ci']['jenkins']['rotation']['number_to_keep']          = -1
+default['jenkins_ci']['jenkins']['rotation']['days_to_keep_artifact']   = -1
+default['jenkins_ci']['jenkins']['rotation']['number_to_keep_artifact'] = -1
 
 # Email notify options
 default['jenkins_ci']['jenkins']['email_notify']['enabled'] = false
