@@ -8,6 +8,6 @@
   "normal": {
   },
   "run_list": [
-    "recipe[jenkins-ci::default]"
+    "recipe[jenkins_ci::default]"
   ]
 }

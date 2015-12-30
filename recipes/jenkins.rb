@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: jenkins-ci
+# Cookbook Name:: jenkins_ci
 # Recipe:: configure-jenkins
 #
 # Adds plugins and common configuration we'll rely on in our Jenkins

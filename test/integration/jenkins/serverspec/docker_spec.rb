@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "jenkins-ci::docker" do
+describe "jenkins_ci::docker" do
   describe "docker is running" do
     describe service('docker') do
       it { should be_enabled }

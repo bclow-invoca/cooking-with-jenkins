@@ -1,13 +1,13 @@
 #
-# jenkins-ci::jenkins
+# jenkins_ci::jenkins
 #
 require_relative 'spec_helper'
 
-describe 'jenkins-ci::jenkins' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+describe 'jenkins_ci::jenkins' do
+  let(:chef_run) { ChefSpec::SoloRunner.new.converge(described_recipe) }
 
   let(:chef_run_no_custom) do
-    ChefSpec::Runner.new do |node|
+    ChefSpec::SoloRunner.new do |node|
       env = Chef::Environment.new
       env.name 'test'
 
@@ -31,19 +31,32 @@ describe 'jenkins-ci::jenkins' do
     analysis-core
     ansicolor
     ant
+    build-pipeline-plugin
+    buildresult-trigger
+    conditional-buildstep
     config-file-provider
     dashboard-view
+    email-ext
+    embeddable-build-status
     git
     git-client
+    git-server
     github
     github-api
     github-oauth
     javadoc
+    jenkins-multijob-plugin
+    jenkinswalldisplay
     maven-plugin
+    pollscm
+    promoted-builds
+    promoted-builds-simple
     scm-api
+    slack
+    ssh-agent
     token-macro
-    violations
     warnings
+    workflow-aggregator
   ).each do |plugin|
     it "install jenkins plugin #{plugin}" do
       expect(chef_run).to install_jenkins_plugin(plugin)

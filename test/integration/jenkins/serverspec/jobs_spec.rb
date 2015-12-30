@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "jenkins-ci::jobs" do
+describe "jenkins_ci::jobs" do
   describe "creates jobs for included cookbooks" do
     list_jobs = command('java -jar /var/cache/jenkins/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080/ list-jobs').stdout
     %w(

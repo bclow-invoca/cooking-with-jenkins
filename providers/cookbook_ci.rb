@@ -19,20 +19,20 @@ action :create do
   end
 
   commands = []
-  unless new_resource.custom_command
+  if new_resource.custom_command
+    commands = [*node['jenkins_ci']['jenkins']['command']['override']['custom']]
+  else
     node['jenkins_ci']['jenkins']['command'][new_resource.command].tap do |command|
       commands << [*command['base']]
       commands << [*command['foodcritic']] if new_resource.foodcritic
       commands << [*command['chefspec']] if new_resource.chefspec
       commands << [*command['serverspec']] if new_resource.serverspec
     end
-  else
-    commands = [*node['jenkins_ci']['jenkins']['command']['override']['custom']]
   end
 
   template job_config do
     source 'cookbook-job.xml.erb'
-    cookbook 'jenkins-ci'
+    cookbook 'jenkins_ci'
     variables(
       :git_url => new_resource.repository,
       :git_branch => new_resource.branch,
