@@ -1,14 +1,14 @@
 #
-# jenkins-ci::apache
+# jenkins_ci::apache
 #
 require_relative 'spec_helper'
 
 apache_usr = 'root'
 apache_grp = 'root'
 
-describe 'jenkins-ci::apache' do
+describe 'jenkins_ci::apache' do
   let(:chef_run) do
-    ChefSpec::Runner.new do |node|
+    ChefSpec::SoloRunner.new do |node|
       env = Chef::Environment.new
       env.name 'test'
 

@@ -1,5 +1,5 @@
 #
-# jenkins-ci::apache
+# jenkins_ci::apache
 #
 include_recipe 'apache2::default'
 include_recipe 'apache2::mod_rewrite'
