@@ -1,10 +1,10 @@
 #
-# jenkins-ci::docker
+# jenkins_ci::docker
 #
 require_relative 'spec_helper'
 
-describe 'jenkins-ci::docker' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+describe 'jenkins_ci::docker' do
+  let(:chef_run) { ChefSpec::SoloRunner.new.converge(described_recipe) }
 
   %w(
     docker::default

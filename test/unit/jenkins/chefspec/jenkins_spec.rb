@@ -1,13 +1,13 @@
 #
-# jenkins-ci::jenkins
+# jenkins_ci::jenkins
 #
 require_relative 'spec_helper'
 
-describe 'jenkins-ci::jenkins' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+describe 'jenkins_ci::jenkins' do
+  let(:chef_run) { ChefSpec::SoloRunner.new.converge(described_recipe) }
 
   let(:chef_run_no_custom) do
-    ChefSpec::Runner.new do |node|
+    ChefSpec::SoloRunner.new do |node|
       env = Chef::Environment.new
       env.name 'test'
 
