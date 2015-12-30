@@ -13,6 +13,7 @@ node['jenkins_ci']['rbenv']['version'].each do |ruby|
   end
 
   rbenv_gem 'bundler' do
+    version '1.9.10'
     ruby_version ruby
   end
 end
