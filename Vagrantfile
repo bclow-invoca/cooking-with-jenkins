@@ -9,7 +9,7 @@ Vagrant.configure("2") do |config|
   # options are documented and commented below. For a complete reference,
   # please see the online documentation at vagrantup.com.
 
-  config.vm.hostname = "jenkins-ci"
+  config.vm.hostname = "jenkins_ci"
 
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "opscode-ubuntu-14.04"
@@ -84,7 +84,7 @@ Vagrant.configure("2") do |config|
     }
 
     chef.run_list = [
-        "recipe[jenkins-ci::default]"
+        "recipe[jenkins_ci::default]"
     ]
   end
 end

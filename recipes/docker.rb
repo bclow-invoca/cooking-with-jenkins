@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: jenkins-ci
+# Cookbook Name:: jenkins_ci
 # Recipe:: configure-docker
 #
 # Prepares docker for running integration tests under jenkins

@@ -7,10 +7,12 @@ default['jenkins_ci']['jenkins']['plugins'] = [] if default['jenkins_ci']['jenki
 default['jenkins_ci']['jenkins']['plugins'] += [
   'scm-api',
   'git-client',
+  'git-server',
   'git',
   'github',
   'github-api',
-  'github-oauth'
+  'github-oauth',
+  'pollscm'
 ]
 
 # common optional dependencies
@@ -34,7 +36,24 @@ default['jenkins_ci']['jenkins']['plugins'] << 'config-file-provider'
 # instructions on http://acrmp.github.io/foodcritic/#ci
 default['jenkins_ci']['jenkins']['plugins'] += [
   'analysis-core',
-  'violations',
   'dashboard-view',
   'warnings'
+]
+
+# ssh forwarding agent
+default['jenkins_ci']['jenkins']['plugins'] << 'ssh-agent'
+
+# build pipelines, notifications, and displays
+default['jenkins_ci']['jenkins']['plugins'] += [
+  'jenkins-multijob-plugin',
+  'build-pipeline-plugin',
+  'buildresult-trigger',
+  'conditional-buildstep',
+  'embeddable-build-status',
+  'promoted-builds',
+  'promoted-builds-simple',
+  'workflow-aggregator',
+  'slack',
+  'email-ext',
+  'jenkinswalldisplay'
 ]

@@ -1,14 +1,53 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <project>
   <actions/>
+<% if @description %>
+  <description><%= @description %></description>
+<% else %>
   <description></description>
+<% end %>
+<% if @rotation %>
+  <logRotator class="hudson.tasks.LogRotator">
+    <daysToKeep><%= node['jenkins_ci']['jenkins']['rotation']['days_to_keep'] %></daysToKeep>
+    <numToKeep><%= node['jenkins_ci']['jenkins']['rotation']['number_to_keep'] %></numToKeep>
+    <artifactDaysToKeep><%= node['jenkins_ci']['jenkins']['rotation']['days_to_keep_artifact'] %></artifactDaysToKeep>
+    <artifactNumToKeep><%= node['jenkins_ci']['jenkins']['rotation']['number_to_keep_artifact'] %></artifactNumToKeep>
+  </logRotator>
+<% end %>
   <keepDependencies>false</keepDependencies>
+<% if @slack_notify %>
+  <properties>
+    <jenkins.plugins.slack.SlackNotifier_-SlackJobProperty plugin="slack@1.8">
+      <teamDomain></teamDomain>
+      <token></token>
+      <room></room>
+      <startNotification><%= node['jenkins_ci']['jenkins']['slack_notify']['options']['notify_start'] %></startNotification>
+      <notifySuccess><%= node['jenkins_ci']['jenkins']['slack_notify']['options']['notify_success'] %></notifySuccess>
+      <notifyAborted><%= node['jenkins_ci']['jenkins']['slack_notify']['options']['notify_aboted'] %></notifyAborted>
+      <notifyNotBuilt><%= node['jenkins_ci']['jenkins']['slack_notify']['options']['notify_not_built'] %></notifyNotBuilt>
+      <notifyUnstable><%= node['jenkins_ci']['jenkins']['slack_notify']['options']['notify_unstable'] %></notifyUnstable>
+      <notifyFailure><%= node['jenkins_ci']['jenkins']['slack_notify']['options']['notify_failure'] %></notifyFailure>
+      <notifyBackToNormal><%= node['jenkins_ci']['jenkins']['slack_notify']['options']['notify_back_to_normal'] %></notifyBackToNormal>
+      <notifyRepeatedFailure><%= node['jenkins_ci']['jenkins']['slack_notify']['options']['notify_repeated_failure'] %></notifyRepeatedFailure>
+      <includeTestSummary><%= node['jenkins_ci']['jenkins']['slack_notify']['options']['include_test_summary'] %></includeTestSummary>
+      <showCommitList><%= node['jenkins_ci']['jenkins']['slack_notify']['options']['show_commit_list'] %></showCommitList>
+      <includeCustomMessage><%= node['jenkins_ci']['jenkins']['slack_notify']['options']['include_custom_message'] %></includeCustomMessage>
+  <% if node['jenkins_ci']['jenkins']['slack_notify']['options']['include_custom_message'] %>
+      <customMessage><%= node['jenkins_ci']['jenkins']['slack_notify']['options']['custom_message'] %></customMessage>
+  <% else %>
+      <customMessage></customMessage>
+  <% end %>
+    </jenkins.plugins.slack.SlackNotifier_-SlackJobProperty>
+  </properties>
+<% else %>
   <properties/>
-  <scm class="hudson.plugins.git.GitSCM" plugin="git@2.0">
+<% end %>
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@2.3.5">
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
         <url><%= @git_url %></url>
+        <credentialsId><%= node['jenkins_ci']['jenkins']['credentials']['git'] %></credentialsId>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>
@@ -24,7 +63,16 @@
   <disabled>false</disabled>
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+<% if @git_triggers %>
+  <triggers>
+    <hudson.triggers.SCMTrigger>
+      <spec><%= node['jenkins_ci']['jenkins']['git_triggers']['spec'] %></spec>
+      <ignorePostCommitHooks>false</ignorePostCommitHooks>
+    </hudson.triggers.SCMTrigger>
+  </triggers>
+<% else %>
   <triggers/>
+<% end %>
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
@@ -72,8 +120,130 @@
       <testDataPublishers/>
     </hudson.tasks.junit.JUnitResultArchiver>
 <% end %>
+<% if @email_notify %>
+    <hudson.plugins.emailext.ExtendedEmailPublisher plugin="email-ext@2.40.5">
+      <recipientList>$DEFAULT_RECIPIENTS</recipientList>
+      <configuredTriggers>
+        <hudson.plugins.emailext.plugins.trigger.FirstFailureTrigger>
+          <email>
+            <recipientList></recipientList>
+            <subject>$PROJECT_DEFAULT_SUBJECT</subject>
+            <body>$PROJECT_DEFAULT_CONTENT</body>
+            <recipientProviders>
+              <hudson.plugins.emailext.plugins.recipients.DevelopersRecipientProvider/>
+              <hudson.plugins.emailext.plugins.recipients.ListRecipientProvider/>
+            </recipientProviders>
+            <attachmentsPattern></attachmentsPattern>
+            <attachBuildLog><%= node['jenkins_ci']['jenkins']['email_notify']['options']['attach_build_log'] %></attachBuildLog>
+            <compressBuildLog><%= node['jenkins_ci']['jenkins']['email_notify']['options']['compress_build_log'] %></compressBuildLog>
+            <replyTo>$PROJECT_DEFAULT_REPLYTO</replyTo>
+            <contentType>project</contentType>
+          </email>
+          <failureCount>1</failureCount>
+        </hudson.plugins.emailext.plugins.trigger.FirstFailureTrigger>
+        <hudson.plugins.emailext.plugins.trigger.SecondFailureTrigger>
+          <email>
+            <recipientList></recipientList>
+            <subject>$PROJECT_DEFAULT_SUBJECT</subject>
+            <body>$PROJECT_DEFAULT_CONTENT</body>
+            <recipientProviders>
+              <hudson.plugins.emailext.plugins.recipients.DevelopersRecipientProvider/>
+              <hudson.plugins.emailext.plugins.recipients.ListRecipientProvider/>
+            </recipientProviders>
+            <attachmentsPattern></attachmentsPattern>
+            <attachBuildLog><%= node['jenkins_ci']['jenkins']['email_notify']['options']['attach_build_log'] %></attachBuildLog>
+            <compressBuildLog><%= node['jenkins_ci']['jenkins']['email_notify']['options']['compress_build_log'] %></compressBuildLog>
+            <replyTo>$PROJECT_DEFAULT_REPLYTO</replyTo>
+            <contentType>project</contentType>
+          </email>
+          <failureCount>2</failureCount>
+        </hudson.plugins.emailext.plugins.trigger.SecondFailureTrigger>
+        <hudson.plugins.emailext.plugins.trigger.FailureTrigger>
+          <email>
+            <recipientList></recipientList>
+            <subject>$PROJECT_DEFAULT_SUBJECT</subject>
+            <body>$PROJECT_DEFAULT_CONTENT</body>
+            <recipientProviders>
+              <hudson.plugins.emailext.plugins.recipients.DevelopersRecipientProvider/>
+            </recipientProviders>
+            <attachmentsPattern></attachmentsPattern>
+            <attachBuildLog><%= node['jenkins_ci']['jenkins']['email_notify']['options']['attach_build_log'] %></attachBuildLog>
+            <compressBuildLog><%= node['jenkins_ci']['jenkins']['email_notify']['options']['compress_build_log'] %></compressBuildLog>
+            <replyTo>$PROJECT_DEFAULT_REPLYTO</replyTo>
+            <contentType>project</contentType>
+          </email>
+        </hudson.plugins.emailext.plugins.trigger.FailureTrigger>
+        <hudson.plugins.emailext.plugins.trigger.StillFailingTrigger>
+          <email>
+            <recipientList></recipientList>
+            <subject>$PROJECT_DEFAULT_SUBJECT</subject>
+            <body>$PROJECT_DEFAULT_CONTENT</body>
+            <recipientProviders>
+              <hudson.plugins.emailext.plugins.recipients.DevelopersRecipientProvider/>
+            </recipientProviders>
+            <attachmentsPattern></attachmentsPattern>
+            <attachBuildLog><%= node['jenkins_ci']['jenkins']['email_notify']['options']['attach_build_log'] %></attachBuildLog>
+            <compressBuildLog><%= node['jenkins_ci']['jenkins']['email_notify']['options']['compress_build_log'] %></compressBuildLog>
+            <replyTo>$PROJECT_DEFAULT_REPLYTO</replyTo>
+            <contentType>project</contentType>
+          </email>
+        </hudson.plugins.emailext.plugins.trigger.StillFailingTrigger>
+        <hudson.plugins.emailext.plugins.trigger.BuildingTrigger>
+          <email>
+            <recipientList></recipientList>
+            <subject>$PROJECT_DEFAULT_SUBJECT</subject>
+            <body>$PROJECT_DEFAULT_CONTENT</body>
+            <recipientProviders>
+              <hudson.plugins.emailext.plugins.recipients.DevelopersRecipientProvider/>
+              <hudson.plugins.emailext.plugins.recipients.ListRecipientProvider/>
+            </recipientProviders>
+            <attachmentsPattern></attachmentsPattern>
+            <attachBuildLog><%= node['jenkins_ci']['jenkins']['email_notify']['options']['attach_build_log'] %></attachBuildLog>
+            <compressBuildLog><%= node['jenkins_ci']['jenkins']['email_notify']['options']['compress_build_log'] %></compressBuildLog>
+            <replyTo>$PROJECT_DEFAULT_REPLYTO</replyTo>
+            <contentType>project</contentType>
+          </email>
+        </hudson.plugins.emailext.plugins.trigger.BuildingTrigger>
+        <hudson.plugins.emailext.plugins.trigger.FixedTrigger>
+          <email>
+            <recipientList></recipientList>
+            <subject>$PROJECT_DEFAULT_SUBJECT</subject>
+            <body>$PROJECT_DEFAULT_CONTENT</body>
+            <recipientProviders>
+              <hudson.plugins.emailext.plugins.recipients.DevelopersRecipientProvider/>
+              <hudson.plugins.emailext.plugins.recipients.ListRecipientProvider/>
+            </recipientProviders>
+            <attachmentsPattern></attachmentsPattern>
+            <attachBuildLog><%= node['jenkins_ci']['jenkins']['email_notify']['options']['attach_build_log'] %></attachBuildLog>
+            <compressBuildLog><%= node['jenkins_ci']['jenkins']['email_notify']['options']['compress_build_log'] %></compressBuildLog>
+            <replyTo>$PROJECT_DEFAULT_REPLYTO</replyTo>
+            <contentType>project</contentType>
+          </email>
+        </hudson.plugins.emailext.plugins.trigger.FixedTrigger>
+      </configuredTriggers>
+      <contentType>default</contentType>
+      <defaultSubject>$DEFAULT_SUBJECT</defaultSubject>
+      <defaultContent>$DEFAULT_CONTENT</defaultContent>
+      <attachmentsPattern></attachmentsPattern>
+      <presendScript>$DEFAULT_PRESEND_SCRIPT</presendScript>
+      <attachBuildLog><%= node['jenkins_ci']['jenkins']['email_notify']['options']['attach_build_log'] %></attachBuildLog>
+      <compressBuildLog><%= node['jenkins_ci']['jenkins']['email_notify']['options']['compress_build_log'] %></compressBuildLog>
+      <replyTo>$DEFAULT_REPLYTO</replyTo>
+      <saveOutput>false</saveOutput>
+      <disabled>false</disabled>
+    </hudson.plugins.emailext.ExtendedEmailPublisher>
+<% end %>
+<% if @slack_notify %>
+    <jenkins.plugins.slack.SlackNotifier plugin="slack@1.8">
+      <teamDomain><%= node['jenkins_ci']['jenkins']['slack_notify']['options']['team_domain'] %></teamDomain>
+      <authToken><%= node['jenkins_ci']['jenkins']['slack_notify']['options']['token'] %></authToken>
+      <buildServerUrl><%= @build_server_url %></buildServerUrl>
+      <room></room>
+    </jenkins.plugins.slack.SlackNotifier>
+<% end %>
   </publishers>
   <buildWrappers>
+<% if @build_wrapper %>
     <org.jenkinsci.plugins.configfiles.buildwrapper.ConfigFileBuildWrapper plugin="config-file-provider@2.7.1">
       <managedFiles>
         <org.jenkinsci.plugins.configfiles.buildwrapper.ManagedFile>
@@ -83,8 +253,17 @@
         </org.jenkinsci.plugins.configfiles.buildwrapper.ManagedFile>
       </managedFiles>
     </org.jenkinsci.plugins.configfiles.buildwrapper.ConfigFileBuildWrapper>
-    <hudson.plugins.ansicolor.AnsiColorBuildWrapper plugin="ansicolor@0.3.1">
+<% end %>
+    <hudson.plugins.ansicolor.AnsiColorBuildWrapper plugin="ansicolor@0.4.1">
       <colorMapName>xterm</colorMapName>
     </hudson.plugins.ansicolor.AnsiColorBuildWrapper>
+<% if @ssh_agent %>
+    <com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper plugin="ssh-agent@1.7">
+      <credentialIds>
+        <string><%= node['jenkins_ci']['jenkins']['credentials']['git'] %></string>
+      </credentialIds>
+      <ignoreMissing>false</ignoreMissing>
+    </com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper>
+<% end %>
   </buildWrappers>
 </project>

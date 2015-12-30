@@ -1,10 +1,10 @@
 #
-# jenkins-ci::jenkins
+# jenkins_ci::jenkins
 #
 require_relative 'spec_helper'
 
-describe 'jenkins-ci::rbenv' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+describe 'jenkins_ci::rbenv' do
+  let(:chef_run) { ChefSpec::SoloRunner.new.converge(described_recipe) }
 
   context 'check defaults' do
     it 'sets node attribute rbenv install to true' do
@@ -47,7 +47,7 @@ describe 'jenkins-ci::rbenv' do
     it "installs ruby version #{ruby} and bundler" do
       expect(chef_run).to install_rbenv_ruby(ruby)
       # BROKEN #expect(chef_run).to install_rbenv_gem('bundler').with(ruby_version: ruby)
-      expect(chef_run).to install_rbenv_gem('bundler')
+      expect(chef_run).to install_rbenv_gem('bundler').with(version: '1.9.10')
     end
   end
 end
