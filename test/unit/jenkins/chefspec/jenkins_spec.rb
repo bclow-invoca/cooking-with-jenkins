@@ -31,19 +31,32 @@ describe 'jenkins_ci::jenkins' do
     analysis-core
     ansicolor
     ant
+    build-pipeline-plugin
+    buildresult-trigger
+    conditional-buildstep
     config-file-provider
     dashboard-view
+    email-ext
+    embeddable-build-status
     git
     git-client
+    git-server
     github
     github-api
     github-oauth
     javadoc
+    jenkins-multijob-plugin
+    jenkinswalldisplay
     maven-plugin
+    pollscm
+    promoted-builds
+    promoted-builds-simple
     scm-api
+    slack
+    ssh-agent
     token-macro
-    violations
     warnings
+    workflow-aggregator
   ).each do |plugin|
     it "install jenkins plugin #{plugin}" do
       expect(chef_run).to install_jenkins_plugin(plugin)
