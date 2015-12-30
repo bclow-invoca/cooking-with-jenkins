@@ -1,10 +1,10 @@
 #
-# jenkins-ci::virtualbox
+# jenkins_ci::virtualbox
 #
 require_relative 'spec_helper'
 
-describe 'jenkins-ci::virtualbox' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+describe 'jenkins_ci::virtualbox' do
+  let(:chef_run) { ChefSpec::SoloRunner.new.converge(described_recipe) }
 
   context 'check defaults' do
     %w(

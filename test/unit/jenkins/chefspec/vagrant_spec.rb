@@ -1,10 +1,10 @@
 #
-# jenkins-ci::vagrant
+# jenkins_ci::vagrant
 #
 require_relative 'spec_helper'
 
-describe 'jenkins-ci::vagrant' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+describe 'jenkins_ci::vagrant' do
+  let(:chef_run) { ChefSpec::SoloRunner.new.converge(described_recipe) }
 
   context 'check defaults' do
     it 'sets vagrant version' do
