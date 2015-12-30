@@ -28,7 +28,7 @@ action :create do
 
   template job_config do
     source 'cookbook-job.xml.erb'
-    cookbook 'jenkins-ci'
+    cookbook 'jenkins_ci'
     variables(
       :git_url => new_resource.repository,
       :git_branch => new_resource.branch,
