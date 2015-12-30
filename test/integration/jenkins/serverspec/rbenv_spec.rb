@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "jenkins-ci::rbenv" do
+describe "jenkins_ci::rbenv" do
   describe "installs rbenv" do
     describe file('/opt/rbenv') do
       it { should be_directory }
@@ -50,7 +50,7 @@ describe "jenkins-ci::rbenv" do
         it { should be_owned_by 'rbenv' }
         it { should be_grouped_into 'rbenv' }
       end
-      version_name = command("RBENV_VERSION=#{ruby} /opt/rbenv/bin/rbenv version-name").stdout
+      version_name = command("sudo -u jenkins -i RBENV_VERSION=#{ruby} /opt/rbenv/bin/rbenv version-name").stdout
       it "RBENV_VERSION=#{ruby} /opt/rbenv/bin/rbenv version-name" do
         expect(version_name).to match(/#{ruby}/)
       end

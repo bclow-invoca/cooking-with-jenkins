@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "jenkins-ci::jenkins" do
+describe "jenkins_ci::jenkins" do
   describe "displays the Jenkins home page on port 8080" do
     describe service('jenkins') do
       it { should be_enabled }

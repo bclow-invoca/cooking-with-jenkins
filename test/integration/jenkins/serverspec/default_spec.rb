@@ -5,5 +5,5 @@ require "spec_helper"
 # FIXME; This is a crappy solution, but it works for the moment.
 sleep(60)
 
-describe "jenkins-ci::default" do
+describe "jenkins_ci::default" do
 end
