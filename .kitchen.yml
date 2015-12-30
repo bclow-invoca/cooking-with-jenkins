@@ -57,5 +57,6 @@ suites:
       centos-6.6
     run_list:
       - recipe[jenkins::java]
+      - recipe[jenkins_ci::apache]
       - recipe[jenkins_ci::rbenv]
       - recipe[jenkins_ci::default]
