@@ -31,3 +31,15 @@ end
 
 # We'll be pulling code using git
 include_recipe 'git::default'
+
+# DISABLED # if node['jenkins_ci']['rbenv']['install']
+# DISABLED #   # We'll need a ruby to run cookbook tests, and some of the gems we'll
+# DISABLED #   # be installing need a few dev packages installed
+# DISABLED #   node['jenkins_ci']['ruby_packages'].each { |p| package p }
+# DISABLED #
+# DISABLED #   include_recipe 'rbenv::user'
+# DISABLED #
+# DISABLED #   if node['jenkins_ci'].key? 'gem_packages'
+# DISABLED #     node['jenkins_ci']['gem_packages'].each { |p| gem_package p }
+# DISABLED #   end
+# DISABLED # end
