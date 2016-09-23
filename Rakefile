@@ -2,7 +2,7 @@
 # constants
 #
 concurrency = ENV['CONCURRENT'] || 1
-CHEF_VERSION = '12.4.3'
+CHEF_VERSION = '12.11.18'
 
 #
 # common tasks
