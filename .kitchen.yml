@@ -5,7 +5,7 @@ driver:
 driver_config:
   customize:
     cpus: 4
-    memory: 6144
+    memory: 4096
   require_chef_omnibus: true
   network:
     - [ 'private_network', { ip: '192.168.33.80' }]
