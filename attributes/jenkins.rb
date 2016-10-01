@@ -1,4 +1,8 @@
-default['jenkins']['executor']['timeout'] = 240
+# Number of seconds to wait for Jenkins to become ready after start/restart/reload
+default['jenkins']['executor']['timeout'] = 300
+
+# Default JVM options to pass to Jenkins master; setting it not run setup wizard by default
+default['jenkins']['master']['jvm_options'] = '-Djenkins.install.runSetupWizard=false'
 
 # Confirm plugins node attribute array exists
 default['jenkins_ci']['jenkins']['plugins'] = [] if default['jenkins_ci']['jenkins']['plugins'].nil
