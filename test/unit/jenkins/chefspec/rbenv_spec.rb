@@ -21,8 +21,9 @@ describe 'jenkins_ci::rbenv' do
     end
 
     %w(
-      1.9.3-p448
       2.1.2
+      2.1.9
+      2.2.2
     ).each do |ruby|
       it "includes ruby version #{ruby}" do
         expect(chef_run.node['jenkins_ci']['rbenv']['version']).to include(ruby)
@@ -41,13 +42,14 @@ describe 'jenkins_ci::rbenv' do
   end
 
   %w(
-    1.9.3-p448
     2.1.2
+    2.1.9
+    2.2.2
   ).each do |ruby|
     it "installs ruby version #{ruby} and bundler" do
       expect(chef_run).to install_rbenv_ruby(ruby)
       # BROKEN #expect(chef_run).to install_rbenv_gem('bundler').with(ruby_version: ruby)
-      expect(chef_run).to install_rbenv_gem('bundler').with(version: '1.9.10')
+      expect(chef_run).to install_rbenv_gem('bundler').with(version: '1.12.5')
     end
   end
 end
