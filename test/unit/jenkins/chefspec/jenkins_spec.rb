@@ -33,11 +33,10 @@ describe 'jenkins_ci::jenkins' do
     ant
     build-pipeline-plugin
     buildresult-trigger
-    conditional-buildstep
-    config-file-provider
     dashboard-view
     email-ext
     embeddable-build-status
+    ez-templates
     git
     git-client
     git-server
@@ -47,6 +46,7 @@ describe 'jenkins_ci::jenkins' do
     javadoc
     jenkins-multijob-plugin
     jenkinswalldisplay
+    matrix-auth
     maven-plugin
     pollscm
     promoted-builds

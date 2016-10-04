@@ -23,7 +23,7 @@
 include_recipe 'jenkins::master'
 
 # unique plugins array before processing it
-node.set['jenkins_ci']['jenkins']['plugins'] = node['jenkins_ci']['jenkins']['plugins'].uniq.sort
+node.set['jenkins_ci']['jenkins']['plugins'] = node['jenkins_ci']['jenkins']['plugins'].uniq
 node['jenkins_ci']['jenkins']['plugins'].each do |plugin|
   Chef::Log.info("---------------------------------> Installing plugin #{plugin} <---------------------------------")
   jenkins_plugin plugin do
