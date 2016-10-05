@@ -42,7 +42,7 @@ describe 'jenkins_ci::apache' do
       expect(chef_run).to create_file('/etc/apache2/conf-available/fqdn.conf').with(
         :user => apache_usr,
         :group => apache_grp,
-        :mode => 00644
+        :mode => 0o0644
       )
       expect(chef_run).to render_file('/etc/apache2/conf-available/fqdn.conf').with_content("fauxhai.local")
     end
@@ -53,7 +53,7 @@ describe 'jenkins_ci::apache' do
       expect(chef_run).to create_directory("/etc/apache2/ssl").with(
         :user => apache_usr,
         :group => apache_grp,
-        :mode => 00755
+        :mode => 0o0755
       )
     end
 
@@ -62,7 +62,7 @@ describe 'jenkins_ci::apache' do
         expect(chef_run).to create_file("/etc/apache2/ssl/#{ssl_file}").with(
           :user => apache_usr,
           :group => apache_grp,
-          :mode => 00600
+          :mode => 0o0600
         )
         expect(chef_run).to render_file("/etc/apache2/ssl/#{ssl_file}").with_content("BEGIN")
       end
@@ -79,7 +79,7 @@ describe 'jenkins_ci::apache' do
         expect(chef_run).to create_template("/etc/apache2/sites-available/#{site}").with(
           :user => apache_usr,
           :group => apache_grp,
-          :mode => 00644
+          :mode => 0o0644
         )
       end
     end

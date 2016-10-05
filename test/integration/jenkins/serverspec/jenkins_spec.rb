@@ -27,17 +27,14 @@ describe "jenkins_ci::jenkins" do
   describe "installs the Jenkins git plugins" do
     list_installed_plugins = command('java -jar /var/cache/jenkins/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080/ list-plugins').stdout
     %w(
-      analysis-core
       ansicolor
       ant
       build-pipeline-plugin
       buildresult-trigger
-      conditional-buildstep
-      config-file-provider
-      dashboard-view
       durable-task
       email-ext
       embeddable-build-status
+      ez-templates
       git
       git-client
       git-server
@@ -45,20 +42,14 @@ describe "jenkins_ci::jenkins" do
       github-api
       github-oauth
       javadoc
-      jenkins-multijob-plugin
       jenkinswalldisplay
+      matrix-auth
       maven-plugin
       pollscm
       promoted-builds
       promoted-builds-simple
-      rbenv
-      ruby-runtime
       scm-api
-      slack
-      ssh-agent
       token-macro
-      warnings
-      workflow-aggregator
     ).each do |plugin|
       it "has #{plugin} plugin installed" do
         expect(list_installed_plugins).to match(/.*#{Regexp.quote(plugin)}.*/)

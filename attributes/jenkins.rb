@@ -1,4 +1,8 @@
-default['jenkins']['executor']['timeout'] = 240
+# Number of seconds to wait for Jenkins to become ready after start/restart/reload
+default['jenkins']['executor']['timeout'] = 300
+
+# Default JVM options to pass to Jenkins master; setting it not run setup wizard by default
+default['jenkins']['master']['jvm_options'] = '-Djenkins.install.runSetupWizard=false'
 
 # Confirm plugins node attribute array exists
 default['jenkins_ci']['jenkins']['plugins'] = [] if default['jenkins_ci']['jenkins']['plugins'].nil
@@ -29,7 +33,7 @@ default['jenkins_ci']['jenkins']['plugins'] << 'ansicolor'
 default['jenkins_ci']['jenkins']['plugins'] << 'token-macro'
 
 # You can use this plugin to enable docker for kitchen tests in your wrapper cookbook if you please
-default['jenkins_ci']['jenkins']['plugins'] << 'config-file-provider'
+# DISABLED_PLUGIN #default['jenkins_ci']['jenkins']['plugins'] << 'config-file-provider'
 
 # lets us parse console output to report on warnings.
 # used to extract foodcritic's complaints, per the
@@ -45,10 +49,11 @@ default['jenkins_ci']['jenkins']['plugins'] << 'ssh-agent'
 
 # build pipelines, notifications, and displays
 default['jenkins_ci']['jenkins']['plugins'] += [
+  'matrix-auth',
+  'ez-templates',
   'jenkins-multijob-plugin',
   'build-pipeline-plugin',
   'buildresult-trigger',
-  'conditional-buildstep',
   'embeddable-build-status',
   'promoted-builds',
   'promoted-builds-simple',

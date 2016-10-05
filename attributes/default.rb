@@ -15,7 +15,8 @@ when 'rhel'
   default['jenkins_ci']['ruby_packages']   = ['libxml2-devel', 'libxslt-devel']
   default['rbenv']['ruby_version'] = 'ruby-1.9.3'
   default['rbenv']['user_installs'] = [
-    { 'user' => 'jenkins',
+    {
+      'user' => 'jenkins',
       'home' => '/var/lib/jenkins',
       'default_ruby' => 'ruby-1.9.3',
       'global_gems' => [

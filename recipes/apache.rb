@@ -19,13 +19,13 @@ jenkins_sec = Chef::EncryptedDataBagItem.load(data_bag, bag_item, secret_file)
 directory node['jenkins_ci']['apache']['ssl_cert_dir'] do
   owner 'root'
   group node['apache']['root_group']
-  mode 0755
+  mode 0o0755
 end
 
 file node['jenkins_ci']['apache']['ssl_cert_path'] do
   owner 'root'
   group node['apache']['root_group']
-  mode 0600
+  mode 0o0600
   content jenkins_sec['ssl']['cert']
   notifies :restart, "service[apache2]", :delayed
 end
@@ -33,7 +33,7 @@ end
 file node['jenkins_ci']['apache']['ssl_key_path'] do
   owner 'root'
   group node['apache']['root_group']
-  mode 0600
+  mode 0o0600
   content jenkins_sec['ssl']['key']
   notifies :restart, "service[apache2]", :delayed
 end
@@ -47,7 +47,7 @@ end
   template "#{node['apache']['dir']}/sites-available/#{site}.conf" do
     owner 'root'
     group node['apache']['root_group']
-    mode 0644
+    mode 0o0644
     source "#{site}.conf.erb"
   end
   apache_site site
@@ -60,7 +60,7 @@ end
 file "#{node['apache']['dir']}/conf-available/fqdn.conf" do
   owner 'root'
   group node['apache']['root_group']
-  mode 0644
+  mode 0o0644
   content "ServerName #{node['fqdn']}"
 end
 

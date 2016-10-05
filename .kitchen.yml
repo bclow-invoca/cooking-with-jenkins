@@ -4,7 +4,7 @@ driver:
 
 driver_config:
   customize:
-    cpus: 2
+    cpus: 4
     memory: 4096
   require_chef_omnibus: true
   network:
@@ -40,25 +40,23 @@ provisioner:
 platforms:
 - name: centos-6.6
   driver:
-    box: opscode-centos-6.6
-    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.6_chef-provisionerless.box
+    box: bento/centos-6.6
   driver_config:
-    require_chef_omnibus: "12.4.3"
+    require_chef_omnibus: "12.11.18"
 - name: ubuntu-14.04
   driver:
-    box: opscode-ubuntu-14.04
-    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box
+    box: bento/ubuntu-14.04
   driver_config:
-    require_chef_omnibus: "12.4.3"
+    require_chef_omnibus: "12.11.18"
 
 suites:
   - name: jenkins
     excludes:
       centos-6.6
     run_list:
-      - recipe[jenkins::java]
       - recipe[jenkins_ci::virtualbox]
       - recipe[jenkins_ci::vagrant]
       - recipe[jenkins_ci::apache]
       - recipe[jenkins_ci::rbenv]
+      - recipe[jenkins::java]
       - recipe[jenkins_ci::default]

@@ -8,7 +8,7 @@ describe 'jenkins_ci::vagrant' do
 
   context 'check defaults' do
     it 'sets vagrant version' do
-      expect(chef_run.node['vagrant']['version']).to eql('1.7.2')
+      expect(chef_run.node['vagrant']['version']).to eql('1.8.4')
     end
 
     %w(

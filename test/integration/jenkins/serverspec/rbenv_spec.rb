@@ -32,8 +32,9 @@ describe "jenkins_ci::rbenv" do
   end
 
   %w(
-    1.9.3-p448
     2.1.2
+    2.1.9
+    2.2.2
   ).each do |ruby|
     describe ruby do
       describe file("/opt/rbenv/versions/#{ruby}") do

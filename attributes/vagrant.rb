@@ -1,4 +1,4 @@
-default['vagrant']['version'] = '1.7.2'
+default['vagrant']['version'] = '1.8.4'
 default['vagrant']['plugins'] = [
   "berkshelf",
   "chef-zero",

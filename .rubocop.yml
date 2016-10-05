@@ -1,3 +1,5 @@
+inherit_from: .rubocop_todo.yml
+
 AllCops:
   Include:
     - Berksfile
@@ -33,7 +35,9 @@ MethodLength:
   Enabled: false
 SignalException:
   Enabled: false
-TrailingComma:
+TrailingCommaInLiteral:
+  Enabled: false
+TrailingCommaInArguments:
   Enabled: false
 WordArray:
   Enabled: false
