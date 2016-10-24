@@ -4,11 +4,11 @@ maintainer_email 'bclow-github@temporalflux.org'
 license          'Apache 2.0'
 description      'Cookbook to ease the use of Jenkins for Chef Cookbook CI'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '0.6.0'
+version          '0.6.1'
 
 depends 'apache2', '~> 3.0.1'
 depends 'apt'
-depends 'docker', '~> 0.37.0'
+depends 'docker', '= 2.9.6'
 depends 'git', '~> 4.1.0'
 depends 'java'
 depends 'jenkins', '~> 2.6.0'

@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'chef',        '= 12.11.18'
 gem 'berkshelf',   '~> 4.2'
+gem 'docker-api'
 
 group :development do
   gem 'foodcritic', '~> 5.0'
