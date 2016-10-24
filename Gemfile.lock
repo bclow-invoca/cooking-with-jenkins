@@ -99,6 +99,9 @@ GEM
       rspec (~> 3.0)
     cleanroom (1.0.0)
     diff-lcs (1.2.5)
+    docker-api (1.32.1)
+      excon (>= 0.38.0)
+      json
     erubis (2.7.0)
     excon (0.52.0)
     faraday (0.9.2)
@@ -294,6 +297,7 @@ DEPENDENCIES
   chef (= 12.11.18)
   chef-zero
   chefspec
+  docker-api
   foodcritic (~> 5.0)
   kitchen-ec2
   kitchen-vagrant
